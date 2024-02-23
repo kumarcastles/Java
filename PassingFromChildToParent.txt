@@ -1,0 +1,64 @@
+//box.css
+
+div.border {    
+    border-style: solid;
+    padding: 20px;
+}
+
+//Parent.js
+
+import React from 'react';
+import Child from './Child';
+
+export default class Parent extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      name : 'React',
+      data : null
+    }
+  }
+  receiveDataFromChild = (data) => {
+    this.setState({data})
+  }
+  render() {
+    return (
+      
+      <div className='border'>
+        <h1>Parent</h1>        
+        <Child name = {this.state.name} sendDataToParent = {this.receiveDataFromChild}/>      
+        <p>Data from Child: </p> {this.state.data && <div> {this.state.data}</div>} 
+      </div>
+      
+    );
+  }
+}
+
+//Child.js
+
+import React from 'react';
+import './box.css'
+
+export default class Child extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {};
+    }
+    onChangeText = (event) => {
+        this.setState({value:event.target.value});
+    }
+    sendDataToParent = () => {
+        this.props.sendDataToParent(this.state.value);
+    }
+    render() {
+      return(
+        <div>
+        <div className='border'>
+          <h3>Child</h3>
+          <input value = {this.state.value} onChange = {this.onChangeText}></input>
+          <button onClick={this.sendDataToParent}>Send Data to Parent</button>
+        </div>
+        </div>
+      );
+    }
+  }
